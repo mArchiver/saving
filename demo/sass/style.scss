@@ -2,25 +2,31 @@ $green     : #c0e5de;
 $blue      : #b1dde3;
 $black     : #676568;
 $red       : #dc7b5e;
+$purple    : #ae96d4;
 $darkgreen : #83986d;
-$barBColor : #eee;
+$barBColor : #e1e1e1;
 $barFColor : #e6ab6b;
 @import "compass";
 @import "compass/reset";
 @import "compass/css3";
+@import "http://fonts.googleapis.com/css?family=Roboto:500,100";
 
 body {
-	background: url("../img/bg.jpg") 50% 0% repeat;
+	background: #eee;
 	color: $black;
-	font-family: Ubuntu, arial, sans-serif;
+	font-family: 'Roboto', sans-serif;
 	font-size: 16px;
 	line-height: 1.5em;
-	overflow: hidden;
+}
+
+img {
+	max-width: 100%;
 }
 
 .container {
+	background: #fff;
+	padding: 0!important;
 	min-height: 1000px;
-	background: rgba($blue, .8);
 	@include pie-clearfix;
 }
 
@@ -31,6 +37,12 @@ input {
 	padding-left: 5px;
 }
 
+.banner {
+	display: inline-block;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: .5em;
+}
+
 .title {
 	background: $black;
 	color: $green;
@@ -38,6 +50,14 @@ input {
 	font-size: 2em;
 	line-height: 100%;
 	padding: .3em 0;
+}
+
+.icon-marry {
+	display: inline-block;
+	width: 20%;
+	float: left;
+	@include border-radius(50%);
+	margin-right: .5em;
 }
 
 /*
@@ -54,53 +74,109 @@ progress, progress[role] {
   width: 100%;
 }
 
+/*
+ Goal
+ */
+
+.final-goal {
+	padding: 0 1em;
+	p {
+		position: relative;
+	}
+	p[data-value]::after {
+		content: attr(data-value) '%';
+		position: absolute;
+		right: 0;
+	}
+	progress {
+		height: 13px;
+		margin-top: 22px;
+	}
+	.bar::-webkit-progress-value {
+		background: $purple;
+		position: relative;
+		&::after {
+			content: '';
+			width: 0;
+			height: 0;
+			position: absolute;
+			border-top: 7px solid transparent;
+			border-bottom: 6px solid transparent;
+			border-left: 12px solid $purple;
+			right: -12px;
+			top: 0;
+		}
+		-webkit-animation: bar-fill 2s;
+	}
+	.bar::-moz-progress-bar {
+		background: $purple;
+		position: relative;
+		&::after {
+			content: '';
+			width: 0;
+			height: 0;
+			position: absolute;
+			border-top: 7px solid transparent;
+			border-bottom: 6px solid transparent;
+			border-left: 12px solid $purple;
+			right: -12px;
+			top: 0;
+		}
+		-moz-animation-name: bar-fill;
+		-moz-animation-duration: 2s;
+	}
+}
+
+.heart {
+	margin-top: 90px;
+	text-align: center;
+	color: lighten($red, 10%);
+	font-size: 2em;
+	line-height: 150%;
+	&.margin-fix {
+		margin-top: 10px;
+	}
+}
+
+.final-day {
+	font-size: 3em;
+	margin-top: 25px;
+	text-align: center;
+	font-weight: 100;
+	.year, .month {
+		color: darken($red, 10%);
+		font-size: 1.5em;
+	}
+}
+
+.text-center {
+	text-align: center;
+	font-weight: 100;
+	font-size: 1.5em;
+	margin-top: 40px;
+}
+
 progress[value]::-webkit-progress-bar {
   background-color: rgba($barBColor, .65);
 }
 
-.target-bar {
-	margin-top: 300px;
-	@include transform(rotate(-90deg));
-	.bar-1::-webkit-progress-value {
-		@include background-image(
-			linear-gradient(-45deg, transparent 33%, rgba(0, 0, 0, .1) 33%, rgba(0,0, 0, .1) 66%, transparent 66%),
-			linear-gradient(top, rgba(255, 255, 255, .25), rgba(0, 0, 0, .25)),
-			linear-gradient(left, #e6ab6b, #dc7b5e, #ae96d4)
-		);
-		-webkit-animation: bar-fill 2s;
+progress {
+	position: relative;
+	&::before, &::after {
+		position: absolute;
 	}
-
-	.bar-1::-moz-progress-bar {
-		@include background-image(
-			linear-gradient(-45deg, transparent 33%, rgba(0, 0, 0, .1) 33%, rgba(0,0, 0, .1) 66%, transparent 66%),
-			linear-gradient(top, rgba(255, 255, 255, .25), rgba(0, 0, 0, .25)),
-			linear-gradient(left, #e6ab6b, #dc7b5e, #ae96d4)
-		);
-		-moz-animation-name: bar-fill;
-		-moz-animation-duration: 2s;
+	&::before {
+		content: '$' attr(data-current);
+		bottom: 0;
+		top: 15px;
 	}
-
-	progress {
-		position: relative;
-		&::before, &::after {
-			position: absolute;
-			@include transform(rotate(90deg));
-		}
-		&::before {
-			content: "$ 50,000";
-			bottom: 0;
-			margin: 0 0 -65px -25px;
-			font-size: 1.5em;
-		}
-		&::after {
-			content: "$ 1,000,000";
-			color: $red;
-			right: 0;
-			margin: 75px -55px 0 0;
-			font-size: 2em;
-		}
+	&::after {
+		content: '$' attr(data-goal);
+		color: $red;
+		right: 0;
 	}
 }
+
 
 .text-side {
 	margin-top: 200px;
@@ -121,9 +197,6 @@ progress[value]::-webkit-progress-bar {
 .end {
 	margin-top: 1em;
 	font-size: 1.5em;
-	.final-day {
-		color: darken($red, 10%);
-	}
 }
 
 @-moz-keyframes bar-fill {
